@@ -13,24 +13,32 @@ export default function Main() {
 
   const { data, status, isError, isLoading } = useQuery("recipes", getRecipes);
 
-  const onSearchbarSearch = (searchTerm: string) => {
+  const onSearchbarClick = (searchTerm: string) => {
     let results = data?.filter((d) => d.Title.includes(searchTerm));
 
     if (results) setSearchResults(results.slice(0, 2));
   };
+
+  const searchRecipeCards = (searchTerm: string ) => {
+    let recipes = data?.filter(d => d.Title.includes(searchTerm));
+
+    if (recipes){
+      setSearchResults(recipes.sort().slice(0, 1))
+    }
+  }
 
   const recipeCardOnClick = (recipe: Recipe) => {
     history.push(`recipes/${recipe.Id}`)
   };
 
   return (
-    <div className="grid grid-cols-1 grid-rows-1 gap-0 justify-items-center">
+    <div className="grid grid-cols-1 grid-rows-1 overflow-hidden gap-0 max-h-screen justify-items-center">
       <img
-        className="grid-cols-1 left-10 opacity-80 px-5 py-3 shadow-md object-fill max-w-3xl mx-auto"
+        className="grid-cols-1 left-10 opacity-80 px-5 py-3 my-3 shadow-md max-w-full w-width mx-auto"
         src="pexels-valeria-boltneva-1860205.jpg"
       ></img>
       <div className="relative bottom-52 grid-cols-1 left-6 w-11/12 z-10 max-w-4xl">
-        <SearchBar onSearch={onSearchbarSearch}></SearchBar>
+        <SearchBar onSearchbarType={searchRecipeCards} onSearchClick={onSearchbarClick}></SearchBar>
         {searchResults.map((r) => {
           <RecipeCard recipe={r} onRecipeClick={recipeCardOnClick}></RecipeCard>;
         })}
@@ -39,3 +47,4 @@ export default function Main() {
     </div>
   );
 }
+ 

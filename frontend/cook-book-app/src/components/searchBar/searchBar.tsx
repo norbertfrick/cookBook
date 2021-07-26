@@ -2,7 +2,9 @@ import React, { useCallback, useState } from "react";
 import { debounce } from "lodash";
 
 interface SearchBarProps{
-  onSearch: (searchTerm: string) => void;
+  onSearchClick: (searchTerm: string) => void;
+  onSearchbarType: (searchTerm: string) => void;
+  
 }
 
 export default function SearchBar(props: SearchBarProps) {
@@ -15,7 +17,7 @@ export default function SearchBar(props: SearchBarProps) {
   const debounceEventHandler = debounce(handleChange, 500);
 
   const onClickSearch = () => {
-    props.onSearch(searchString);
+    props.onSearchClick(searchString);
   };
 
   return (
