@@ -1,17 +1,6 @@
-import { useState } from "react";
 import React from "react";
 
 export default function Header() {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
   return (
     <div>
       <nav>
