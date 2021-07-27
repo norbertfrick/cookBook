@@ -1,24 +1,27 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback } from "react";
 import { debounce } from "lodash";
 
 interface SearchBarProps{
-  onSearchClick: (searchTerm: string) => void;
-  onSearchbarType: (searchTerm: string) => void;
-  
+  data: {results: []};
 }
 
-export default function SearchBar(props: SearchBarProps) {
-  const [searchString, setSearchString] = useState("");
+export default function SearchBar(props: SearchBarProps){
 
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchString(e.target.value);
+    onSearchType(e.target.value);
   }, []);
 
   const debounceEventHandler = debounce(handleChange, 500);
 
-  const onClickSearch = () => {
-    props.onSearchClick(searchString);
+  const onSearchType = (searchString: string) => {
+    console.log("Calling SearchRecipes...");
+
+    console.log(props.data);
   };
+
+  const onClickSearch = () =>{
+    
+  }
 
   return (
     <div>
