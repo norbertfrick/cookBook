@@ -1,15 +1,13 @@
-import { MouseEventHandler, useState } from "react";
+import { MouseEventHandler } from "react";
 import { Recipe } from "../../model/recipe";
 
-export default function RecipeCard(props: RecipeCardProps) {
-  const [recipe, setRecipe] = useState<Recipe>();
-
+const RecipeCard: React.FC<RecipeCardProps> = (props: RecipeCardProps) => {
   const OnRecipeClick = (event: MouseEventHandler<HTMLDivElement>) => {
-    if (recipe) props.onRecipeClick(recipe);
+    if (props.recipe) props.onRecipeClick(props.recipe);
   };
 
   return (
-    <div className=" space-x-2 m-2 w-2/3 font-mono rounded-xl shadow-xl  border-2 border-transparent border-gray-200 hover:bg-gray-300 md:inline-flex">
+    <div className="space-x-2 m-2 w-2/3 shadow-xl bg-white border-2 border-transparent border-gray-200 hover:bg-gray-300 md:inline-flex">
       <img
         className="max-h-48 p-2 w-full object-scale-down rounded-xl lg:max-h-32 md:object-left "
         src={props.recipe?.PictureUrl}
@@ -26,6 +24,8 @@ export default function RecipeCard(props: RecipeCardProps) {
     </div>
   );
 }
+
+export default RecipeCard;
 
 interface RecipeCardProps {
   onRecipeClick: (r: Recipe) => void;

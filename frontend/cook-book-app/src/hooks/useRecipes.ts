@@ -10,7 +10,7 @@ export default function useRecipes() {
     const result = await api.get(
       `https://randomuser.me/api/?results=25`
     );
-    return result.data;
+    return result.data.results;
   };
 
 

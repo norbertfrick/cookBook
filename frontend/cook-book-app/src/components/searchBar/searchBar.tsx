@@ -1,12 +1,13 @@
 import React, { useCallback } from "react";
 import { debounce } from "lodash";
+import { Recipe } from "../../model/recipe";
 
-interface SearchBarProps{
-  data: {results: []};
+interface SearchBarProps {
+  data: Recipe[];
+  onSearchResultsChange: (recipes: Recipe[]) => void;
 }
 
-export default function SearchBar(props: SearchBarProps){
-
+export default function SearchBar(props: SearchBarProps) {
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     onSearchType(e.target.value);
   }, []);
@@ -14,14 +15,15 @@ export default function SearchBar(props: SearchBarProps){
   const debounceEventHandler = debounce(handleChange, 500);
 
   const onSearchType = (searchString: string) => {
-    console.log("Calling SearchRecipes...");
+    if (searchString == '') return [{}];
 
-    console.log(props.data);
+    let filteredData = props.data.filter(
+      (p) => p.User.includes(searchString) || p.Title.includes(searchString)
+    );
+    props.onSearchResultsChange(filteredData);
   };
 
-  const onClickSearch = () =>{
-    
-  }
+  const onClickSearch = () => {};
 
   return (
     <div>
