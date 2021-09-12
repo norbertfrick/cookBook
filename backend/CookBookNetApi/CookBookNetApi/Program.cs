@@ -21,6 +21,6 @@ namespace CookBookNetApi
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                });
+                }).ConfigureAppConfiguration((hostingContext, config) => { });
     }
 }

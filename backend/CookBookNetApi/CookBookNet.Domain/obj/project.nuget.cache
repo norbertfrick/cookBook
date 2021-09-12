@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "dgSpecHash": "5e4aVhMgYxyMG/7PzvAd1DUipl5f/WoJgYGjmRJ0J0qya5Z4y4+rehDZ8y41Oup12v3SbEfp0vxgfHpSn+Gxjw==",
+  "success": true,
+  "projectFilePath": "C:\\_repos\\cookBook\\backend\\CookBookNetApi\\CookBookNet.Domain\\CookBookNet.Domain.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\nfrick\\.nuget\\packages\\microsoft.aspnetcore.http.features\\5.0.9\\microsoft.aspnetcore.http.features.5.0.9.nupkg.sha512",
+    "C:\\Users\\nfrick\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\5.0.0\\microsoft.extensions.configuration.abstractions.5.0.0.nupkg.sha512",
+    "C:\\Users\\nfrick\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\5.0.0\\microsoft.extensions.dependencyinjection.abstractions.5.0.0.nupkg.sha512",
+    "C:\\Users\\nfrick\\.nuget\\packages\\microsoft.extensions.primitives\\5.0.1\\microsoft.extensions.primitives.5.0.1.nupkg.sha512",
+    "C:\\Users\\nfrick\\.nuget\\packages\\system.io.pipelines\\5.0.1\\system.io.pipelines.5.0.1.nupkg.sha512"
+  ],
+  "logs": []
+}
