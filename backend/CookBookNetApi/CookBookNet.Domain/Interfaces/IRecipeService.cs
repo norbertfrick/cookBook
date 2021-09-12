@@ -8,17 +8,17 @@ namespace CookBookNet.Domain.Interfaces
 {
     public interface IRecipeService
     {
-        public Recipe GetById(Guid id);
+        public  Task<Recipe> GetById(Guid id);
 
-        public Recipe GetByName();
+        public  Task<Recipe> GetByName();
 
-        public List<Recipe> GetAll();
+        public  Task<List<Recipe>> GetAll();
 
-        public Recipe AddRecipe(Recipe recipe);
+        public  Task<Recipe> AddRecipe(Recipe recipe);
 
-        public void DeleteRecipe(Guid id);
+        public  Task<Recipe> DeleteRecipe(Guid id);
 
-        public void UpdateRecipe(Guid id, Recipe recipe);
+        public  Task UpdateRecipe(Guid id, Recipe recipe);
 
     }
 }

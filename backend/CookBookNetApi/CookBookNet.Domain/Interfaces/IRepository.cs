@@ -8,14 +8,14 @@ namespace CookBookNet.Domain.Interfaces
 {
     public interface IRepository<T>
     {
-        public IEnumerable<T> GetAll();
+        public Task<IEnumerable<T>> GetAll();
 
-        public T GetSingle(Guid id);
+        public Task<T> GetSingle(Guid id);
 
-        public T Update(Guid id, T entity);
+        public Task<T> Update(Guid id, T entity);
 
-        public void Delete(Guid id);
+        public Task Delete(Guid id);
 
-        public T Create(T entity);
+        public Task<T> Create(T entity);
     }
 }
