@@ -9,6 +9,7 @@ using CookBookNet.Domain.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System;
 using System.Threading.Tasks;
+using CookBookNet.Infrastructure.Authentication.TokenIssuer;
 
 namespace CookBookNet.Infrastructure
 {
@@ -22,6 +23,7 @@ namespace CookBookNet.Infrastructure
 
             services.AddScoped<IPasswordEncryptionProvider, PasswordEncryptionProvider>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddScoped<ITokenIssuer, JWTTokenIssuer>();
 
             services.AddScoped<IRepository<Recipe>, RecipeRepository>();
             services.AddScoped<IRepository<User>, UserRepository>();
