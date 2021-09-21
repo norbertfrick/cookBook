@@ -28,26 +28,34 @@ namespace CookBookNetApi.Controllers
         }
 
        [HttpPost]
-       public IActionResult Authenticate([FromBody] AuthenticationDto user)
+       public async Task<IActionResult> Authenticate([FromBody] AuthenticationDto user)
         {
-            var authResult = this.authService.Authenticate(user.Username, user.Password);
-
-            if (authResult == null)
-                return BadRequest(new { message = "Username or password is incorrect!"});
-
-            var token = this.tokenIssuer.GetToken(authResult.Id.ToString());
-
-            return Ok(new
+            try
             {
-                Id = authResult.Id,
-                Username = authResult.UserName,
-                Token = token
-            });
+                var authResult = await this.authService.Authenticate(user.Username, user.Password);
+
+                if (authResult == null)
+                    return BadRequest(new { message = "Username or password is incorrect!" });
+
+                var token = this.tokenIssuer.GetToken(authResult.Id.ToString());
+
+                return Ok(new
+                {
+                    Id = authResult.Id,
+                    Username = authResult.UserName,
+                    Token = token
+                });
+            }
+            catch (Exception ex)
+            {
+                return Unauthorized(ex.Message);
+            }
+            
         }
 
 
         [HttpPost("register")]
-        public IActionResult Register([FromBody] AuthenticationDto user)
+        public async Task<IActionResult> Register([FromBody] AuthenticationDto user)
         {
             var result = this.authService.Register();
 
