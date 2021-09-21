@@ -9,10 +9,10 @@ namespace CookBookNet.Infrastructure.Authentication
 {
     public interface IAuthenticationService
     {
-        public User Authenticate(string username, string password);
+        public Task<User> Authenticate(string username, string password);
 
-        public User Register();
+        public Task<User> Register();
 
-        public User ChangePassword();
+        public Task<User> ChangePassword();
     }
 }

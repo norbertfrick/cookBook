@@ -20,17 +20,28 @@ namespace CookBookNet.Infrastructure.Authentication
             this.encryptionProvider = encryptionProvider;
         }
 
-        public User Authenticate(string username, string password)
+        public async Task<User> Authenticate(string username, string password)
+        {
+            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+                return null;
+
+            var user = (await this.repository.GetAll()).Where(u => u.UserName == username).FirstOrDefault();
+
+            if (user == null)
+                return null;
+
+            if (!this.encryptionProvider.VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
+                return null;
+
+            return user;
+        }
+
+        public Task<User> ChangePassword()
         {
             throw new NotImplementedException();
         }
 
-        public User ChangePassword()
-        {
-            throw new NotImplementedException();
-        }
-
-        public User Register()
+        public Task<User> Register()
         {
             throw new NotImplementedException();
         }
