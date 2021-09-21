@@ -1,4 +1,4 @@
-﻿using CookBookNet.Domain.Entities;
+﻿using CookBookNet.Domain;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -13,15 +13,15 @@ namespace CookBookNetApi
         public string Title { get; set; }
         public Guid CategoryId { get; set; }
         public string Description { get; set; }
-        public List<CookingStep> Steps { get; set; }
-        public List<Ingredient> Ingredients { get; set; }
+        public List<CookingStepDto> Steps { get; set; }
+        public List<IngredientDto> Ingredients { get; set; }
         public Guid UserId { get; set; }
         //public string ImagePath { get; set; }
         public IFormFile Image { get; set; }
 
-        }
-
-
-
     }
+
+
+
 }
+

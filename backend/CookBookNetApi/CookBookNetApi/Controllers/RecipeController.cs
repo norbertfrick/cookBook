@@ -1,4 +1,4 @@
-﻿using CookBookNetApi.Domains.DTO;
+﻿using CookBookNet.Domain.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -14,6 +14,13 @@ namespace CookBookNetApi.Controllers
     [Route("recipes")]
     public class RecipeController : ControllerBase
     {
+        private readonly IRecipeService recipeService;
+
+        public RecipeController(IRecipeService recipeService)
+        {
+            this.recipeService = recipeService;
+        }
+
         [HttpGet]
         public async Task<IEnumerable<RecipeDto>> GetRecipes()
         {
@@ -50,12 +57,5 @@ namespace CookBookNetApi.Controllers
 
             return Ok();
         }
-
-        [NonAction]
-        public string SaveImage(IFormFile img)
-        {
-            return "";
-        }
-
     }
 }
