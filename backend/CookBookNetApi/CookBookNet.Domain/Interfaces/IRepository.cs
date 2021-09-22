@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CookBookNet.Domain.Interfaces
 {
-    public interface IRepository<T>
+    public interface IRepository<T> where T: class
     {
         public Task<IEnumerable<T>> GetAll();
 
