@@ -23,12 +23,12 @@ namespace CookBookNet.Domain.Services
             var imagePath = imageHandler.SaveImage(recipe.Image.FileName, recipe.Image);
             recipe.ImagePath = imagePath;
             
-            return this.repository.Create(recipe);
+            return await this.repository.Create(recipe);
         }
 
         public async Task<Recipe> DeleteRecipe(Guid id)
         {
-            var recipe = this.repository.GetSingle(id);
+            var recipe = await this.repository.GetSingle(id);
             this.repository.Delete(id);
 
             return recipe;
@@ -36,12 +36,12 @@ namespace CookBookNet.Domain.Services
 
         public async Task<List<Recipe>> GetAll()
         {
-            return this.repository.GetAll().ToList();
+            return (await this.repository.GetAll()).ToList();
         }
 
         public async Task<Recipe> GetById(Guid id)
         {
-            return this.repository.GetSingle(id);
+            return await this.repository.GetSingle(id);
         }
 
         public async Task<Recipe> GetByName()
@@ -51,7 +51,7 @@ namespace CookBookNet.Domain.Services
 
         public async Task UpdateRecipe(Guid id, Recipe recipe)
         {
-            var storedRecipe = this.repository.GetSingle(id);
+            var storedRecipe = await this.repository.GetSingle(id);
 
             if (recipe.ImagePath != storedRecipe.ImagePath)
             {

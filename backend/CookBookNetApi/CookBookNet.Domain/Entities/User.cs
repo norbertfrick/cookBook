@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Threading.Tasks;
 
-namespace CookBookNet.Domain.Entities
+namespace CookBookNet.Domain
 {
     public class User
     {
@@ -18,7 +18,14 @@ namespace CookBookNet.Domain.Entities
         [Required]
         [Column(TypeName = "nvarchar(50)")]
         public string UserName { get; set; }
-        [Column(TypeName ="nvarchar(50)") ]
+        
+        [Required]
+        public byte[] PasswordHash { get; set; }
+
+        public byte[] PasswordSalt { get; set; }
+
+
+        [Column(TypeName = "nvarchar(50)")]
         public string FirstName { get; set; }
         [Column(TypeName = "nvarchar(50)")]
         public string LastName { get; set; }

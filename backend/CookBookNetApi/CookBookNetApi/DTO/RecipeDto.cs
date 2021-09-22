@@ -1,5 +1,4 @@
 ﻿using CookBookNet.Domain;
-using CookBookNet.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -19,8 +18,8 @@ namespace CookBookNetApi
             this.Title = r.Title;
             this.CategoryId = r.CategoryId;
             this.Description = r.Description;
-            this.CookingSteps = JsonSerializer.Deserialize<List<CookingStep>>(r.Steps);
-            this.Ingredients = JsonSerializer.Deserialize<List<Ingredient>>(r.Ingredients);
+            this.CookingSteps = JsonSerializer.Deserialize<List<CookingStepDto>>(r.Steps);
+            this.Ingredients = JsonSerializer.Deserialize<List<IngredientDto>>(r.Ingredients);
             this.UserId = r.UserId;
             this.Image = r.Image;
         }
@@ -29,10 +28,11 @@ namespace CookBookNetApi
         public string Title { get; set; }
         public Guid CategoryId { get; set; }
         public string Description { get; set; }
-        public List<CookingStep> CookingSteps { get; set; }
-        public List<Ingredient> Ingredients { get; set; }
+        public List<CookingStepDto> CookingSteps { get; set; }
+        public List<IngredientDto> Ingredients { get; set; }
         public Guid UserId { get; set; }
         public IFormFile Image { get; set; }
 
     }
 }
+

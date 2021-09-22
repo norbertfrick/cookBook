@@ -1,4 +1,4 @@
-﻿using CookBookNet.Domain.Entities;
+﻿using CookBookNet.Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace CookBookNet.Infrastructure.DA.Context

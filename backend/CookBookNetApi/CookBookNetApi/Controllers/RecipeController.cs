@@ -97,12 +97,5 @@ namespace CookBookNetApi.Controllers
                 var result = await this.recipeService.DeleteRecipe(id);
 
                 return Ok(result);
-
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(ex);
-            }
-        }
     }
 }

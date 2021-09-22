@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System;
 
-namespace CookBookNet.Domain.Entities
+namespace CookBookNet.Domain
 {
     public class Category
     {

@@ -1,5 +1,0 @@
-C:\_repos\cookBook\backend\CookBookNetApi\CookBookNet.Domain\obj\Debug\net5.0\CookBookNet.Domain.csprojAssemblyReference.cache
-C:\_repos\cookBook\backend\CookBookNetApi\CookBookNet.Domain\obj\Debug\net5.0\CookBookNet.Domain.GeneratedMSBuildEditorConfig.editorconfig
-C:\_repos\cookBook\backend\CookBookNetApi\CookBookNet.Domain\obj\Debug\net5.0\CookBookNet.Domain.AssemblyInfoInputs.cache
-C:\_repos\cookBook\backend\CookBookNetApi\CookBookNet.Domain\obj\Debug\net5.0\CookBookNet.Domain.AssemblyInfo.cs
-C:\_repos\cookBook\backend\CookBookNetApi\CookBookNet.Domain\obj\Debug\net5.0\CookBookNet.Domain.csproj.CoreCompileInputs.cache
