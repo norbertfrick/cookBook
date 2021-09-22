@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CookBookNet.Domain.Interfaces
 {
-    public interface IEntityMapper<T, K> where T: IDto
+    public interface IEntityMapper<T, K>
     {
         public T MapToDto(K entity);
 
