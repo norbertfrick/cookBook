@@ -8,6 +8,9 @@ using CookBookNet.Infrastructure.Authentication;
 using CookBookNet.Infrastructure.Authentication.TokenIssuer;
 using CookBookNet.Domain.Interfaces;
 using CookBookNet.Infrastructure.DA.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System;
+using System.Threading.Tasks;
 
 namespace CookBookNet.Infrastructure
 {

@@ -19,7 +19,6 @@ namespace CookBookNet.Domain
         [Column(TypeName = "nvarchar(50)")]
         public string UserName { get; set; }
         
-        [Required]
         public byte[] PasswordHash { get; set; }
 
         public byte[] PasswordSalt { get; set; }

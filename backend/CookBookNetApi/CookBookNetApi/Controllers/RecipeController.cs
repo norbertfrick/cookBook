@@ -33,7 +33,7 @@ namespace CookBookNetApi.Controllers
                 var recipes = await this.recipeService.GetAll();
                 result = recipes.Select(r => mapper.MapToDto(r)).ToList();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return NotFound(ex);
             }
@@ -51,14 +51,14 @@ namespace CookBookNetApi.Controllers
 
                 return Ok(this.mapper.MapToDto(result));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return NotFound(ex);
             }
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody]RecipeDto dto)
+        public async Task<IActionResult> Create([FromBody] RecipeDto dto)
         {
             try
             {
@@ -67,14 +67,14 @@ namespace CookBookNetApi.Controllers
                 return CreatedAtAction("CreateRecipe", new { id = result.Id }, result);
             }
 
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex);
             }
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update([FromBody]RecipeDto dto)
+        public async Task<IActionResult> Update([FromBody] RecipeDto dto)
         {
             try
             {
@@ -82,7 +82,7 @@ namespace CookBookNetApi.Controllers
 
                 return Ok(dto);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex);
             }
@@ -97,5 +97,11 @@ namespace CookBookNetApi.Controllers
                 var result = await this.recipeService.DeleteRecipe(id);
 
                 return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+        }
     }
 }
