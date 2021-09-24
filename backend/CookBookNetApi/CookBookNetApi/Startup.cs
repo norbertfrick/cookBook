@@ -1,5 +1,9 @@
+using CookBookNet.Domain;
+using CookBookNet.Domain.Interfaces;
 using CookBookNet.Infrastructure;
 using CookBookNet.Infrastructure.Authentication;
+using CookBookNetApi.Mappers;
+using CookBookNetApi.Swagger;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -24,10 +28,17 @@ namespace CookBookNetApi
         {
             services.AddCors();
             services.AddControllers();
+            
+            
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "CookBookNetApi", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "CookBookApi", Version = "v1" });
+                c.OperationFilter<AuthorizationOperationFilter>();
+
             });
+            
+            
+            services.AddScoped<IEntityMapper<RecipeDto, Recipe>, RecipeMapper>();
 
             ModuleLoader.Load(this.Configuration, services);
         }
