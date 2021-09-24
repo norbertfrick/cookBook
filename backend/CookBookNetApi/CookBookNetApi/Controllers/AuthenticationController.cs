@@ -48,9 +48,9 @@ namespace CookBookNetApi.Controllers
 
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] AuthenticationDto user)
+        public async Task<IActionResult> Register([FromBody] UserCreationDto user)
         {
-            var result = this.authService.Register();
+            var result = await this.authService.Register(user.Email, user.Username, user.Password);
 
             return Ok(result);
         }
