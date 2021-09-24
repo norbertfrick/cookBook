@@ -41,9 +41,24 @@ namespace CookBookNet.Infrastructure.Authentication
             throw new NotImplementedException();
         }
 
-        public Task<User> Register()
+        public async Task<User> Register(string email, string username, string password)
         {
-            throw new NotImplementedException();
+            var user = new User();
+            user.UserName = username;
+            user.Email = email;
+
+            this.encryptionProvider.CreatePasswordHash(password, out var hash, out var key);
+
+            user.PasswordHash = hash;
+            user.PasswordSalt = key;
+
+            //var hashString = Encoding.UTF8.GetString(hash, 0, hash.Length);
+            //var saltString = Encoding.UTF8.GetString(key, 0, key.Length);
+
+
+            var result = await this.repository.Create(user);
+
+            return result;
         }
     }
 }

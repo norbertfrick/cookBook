@@ -11,7 +11,7 @@ namespace CookBookNet.Infrastructure.Authentication
     {
         public Task<User> Authenticate(string username, string password);
 
-        public Task<User> Register();
+        public Task<User> Register(string email, string username, string password);
 
         public Task<User> ChangePassword();
     }
