@@ -1,5 +1,6 @@
 ﻿using CookBookNet.Domain;
 using CookBookNet.Domain.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace CookBookNetApi.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [ApiController]
     [Route("recipes")]
     public class RecipeController : ControllerBase
@@ -23,6 +24,7 @@ namespace CookBookNetApi.Controllers
             this.mapper = mapper;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetRecipes()
         {
@@ -41,7 +43,8 @@ namespace CookBookNetApi.Controllers
             return Ok(result);
 
         }
-
+        
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetSingle(Guid id)
         {
