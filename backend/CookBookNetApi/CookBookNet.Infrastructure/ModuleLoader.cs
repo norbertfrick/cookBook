@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using CookBookNet.Domain;
 using CookBookNet.Infrastructure.DA.Context;
 using CookBookNet.Infrastructure.Authentication.PasswordEncryption;
@@ -11,6 +10,9 @@ using CookBookNet.Infrastructure.DA.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.SqlServer;
+using CookBookNet.Infrastructure.DA;
 
 namespace CookBookNet.Infrastructure
 {
@@ -19,6 +21,9 @@ namespace CookBookNet.Infrastructure
         public static void Load(IConfiguration configuration, IServiceCollection services)
         {
             var domainModule = new DefaultDomainLoader();
+            
+
+            LoadContext(configuration, services);
 
             domainModule.Configure(configuration, services);
 
@@ -55,10 +60,13 @@ namespace CookBookNet.Infrastructure
 
         public static void LoadContext(IConfiguration configuration, IServiceCollection services)
         {
-            bool.TryParse(configuration.GetSection("IsInMemoryDb").Value, out var result);
+            bool.TryParse(configuration.GetSection("IsInMemoryDb").Value, out var isInMemory);
 
-            if (result)
-                services.AddDbContext<CookBookMockDbContext>();
+            if (isInMemory)
+            {
+                services.AddDbContext<CookBookDbContext>(options => options.UseInMemoryDatabase("CookBookDb"));
+                services.AddScoped<MockDataGenerator>();
+            }
             else
                 services.AddDbContext<CookBookDbContext>();
         }
