@@ -1,16 +1,30 @@
 ﻿using CookBookNet.Domain;
 using CookBookNet.Domain.Interfaces;
+using CookBookNet.Infrastructure.DA.Context;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CookBookNet.Infrastructure.DA.Repositories
 {
     public class UserRepository : IRepository<User>
     {
-        public Task<User> Create(User entity)
+        private readonly CookBookDbContext context;
+
+        public UserRepository(CookBookDbContext context)
         {
-            throw new NotImplementedException();
+            this.context = context;
+        }
+
+        public async Task<User> Create(User entity)
+        {
+            var user = await this.context.AddAsync(entity);
+
+            await this.context.SaveChangesAsync();
+
+            return user.Entity;
+
         }
 
         public Task Delete(Guid id)
@@ -18,9 +32,9 @@ namespace CookBookNet.Infrastructure.DA.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<User>> GetAll()
+        public IEnumerable<User> GetAll()
         {
-            throw new NotImplementedException();
+            return this.context.Users.ToList();
         }
 
         public Task<User> GetSingle(Guid id)

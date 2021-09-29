@@ -20,8 +20,8 @@ namespace CookBookNet.Domain.Services
 
         public async Task<Recipe> AddRecipe(Recipe recipe)
         {
-            var imagePath = imageHandler.SaveImage(recipe.Image.FileName, recipe.Image);
-            recipe.ImagePath = imagePath;
+            if (recipe.Image != null)
+                recipe.ImagePath = imageHandler.SaveImage(recipe.Image.FileName, recipe.Image);
             
             return await this.repository.Create(recipe);
         }
@@ -36,7 +36,8 @@ namespace CookBookNet.Domain.Services
 
         public async Task<List<Recipe>> GetAll()
         {
-            return (await this.repository.GetAll()).ToList();
+            var recipes = this.repository.GetAll();
+            return recipes.ToList();
         }
 
         public async Task<Recipe> GetById(Guid id)

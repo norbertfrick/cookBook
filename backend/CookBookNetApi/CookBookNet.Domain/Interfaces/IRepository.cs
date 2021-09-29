@@ -8,7 +8,7 @@ namespace CookBookNet.Domain.Interfaces
 {
     public interface IRepository<T> where T: class
     {
-        public Task<IEnumerable<T>> GetAll();
+        public IEnumerable<T> GetAll();
 
         public Task<T> GetSingle(Guid id);
 

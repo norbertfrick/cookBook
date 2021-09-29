@@ -17,7 +17,7 @@ namespace CookBookNet.Domain.Services
         }
         public async Task<List<User>> GetAll()
         {
-            var result =  await this.userRepository.GetAll();
+            var result =  this.userRepository.GetAll();
             return result.ToList();
         }
 

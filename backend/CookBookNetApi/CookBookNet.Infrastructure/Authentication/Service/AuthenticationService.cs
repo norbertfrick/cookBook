@@ -25,7 +25,7 @@ namespace CookBookNet.Infrastructure.Authentication
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
                 return null;
 
-            var user = (await this.repository.GetAll()).Where(u => u.UserName == username).FirstOrDefault();
+            var user = this.repository.GetAll().Where(u => u.UserName == username).FirstOrDefault();
 
             if (user == null)
                 return null;
