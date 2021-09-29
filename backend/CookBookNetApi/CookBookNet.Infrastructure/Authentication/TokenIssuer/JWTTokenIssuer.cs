@@ -14,7 +14,7 @@ namespace CookBookNet.Infrastructure.Authentication.TokenIssuer
         public string GetToken(string userId)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes("secret");
+            var key = Encoding.ASCII.GetBytes("my secret key for authentication");
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
