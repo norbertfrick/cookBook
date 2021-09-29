@@ -12,6 +12,8 @@ namespace CookBookNetApi
 
         public string Unit { get; set; }
 
+        public string Description { get; set; }
+
     }
 
 
