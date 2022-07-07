@@ -28,10 +28,14 @@ namespace CookBookNet.Domain.Services
 
         public async Task<Recipe> DeleteRecipe(Guid id)
         {
-            var recipe = await this.repository.GetSingle(id);
-            this.repository.Delete(id);
+            var entity = await this.repository.GetSingle(id);
 
-            return recipe;
+            if (entity is null) return null;
+
+
+            this.repository.Delete(entity);
+
+            return entity;
         }
 
         public async Task<List<Recipe>> GetAll()
@@ -60,7 +64,7 @@ namespace CookBookNet.Domain.Services
                 recipe.ImagePath = this.imageHandler.SaveImage(recipe.Image.FileName, recipe.Image);
             }
 
-            this.repository.Update(id, recipe);
+            await this.repository.Update(id, recipe);
         }
 
 

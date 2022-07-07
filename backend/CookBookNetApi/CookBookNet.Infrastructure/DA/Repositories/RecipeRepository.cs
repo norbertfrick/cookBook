@@ -26,9 +26,11 @@ namespace CookBookNet.Infrastructure.DA.Repositories
             return entry?.Entity;
         }
 
-        public async Task Delete(Guid id)
+        public Recipe Delete(Recipe entity)
         {
-            throw new NotImplementedException();
+            this.context.Recipes.Remove(entity);
+
+            return entity;
         }
 
         public IEnumerable<Recipe> GetAll()
@@ -38,12 +40,17 @@ namespace CookBookNet.Infrastructure.DA.Repositories
 
         public async Task<Recipe> GetSingle(Guid id)
         {
-            throw new NotImplementedException();
+            return await this.context.Recipes.FindAsync(id);
         }
 
         public async Task<Recipe> Update(Guid id, Recipe entity)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<IEnumerable<Recipe>> GetBySpec(Func<Recipe, bool> spec)
+        {
+            return this.context.Recipes.Where(spec);
         }
     }
 }

@@ -32,6 +32,7 @@ namespace CookBookNet.Domain
 
         public string ImagePath { get; set; }
         
+        [NotMapped]
         public IFormFile Image { get; set; }
 
     }

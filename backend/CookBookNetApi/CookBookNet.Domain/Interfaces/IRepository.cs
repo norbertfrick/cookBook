@@ -14,8 +14,10 @@ namespace CookBookNet.Domain.Interfaces
 
         public Task<T> Update(Guid id, T entity);
 
-        public Task Delete(Guid id);
+        public T Delete(T entity);
 
         public Task<T> Create(T entity);
+
+        public Task<IEnumerable<T>> GetBySpec(Func<T, bool> spec);
     }
 }
