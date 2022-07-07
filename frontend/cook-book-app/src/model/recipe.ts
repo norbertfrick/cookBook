@@ -5,5 +5,6 @@ export interface Recipe {
     Description: string;
     PictureUrl: string;
     User: string;
+    Tags: string[]
 
 }

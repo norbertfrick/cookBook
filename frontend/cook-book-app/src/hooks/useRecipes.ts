@@ -15,7 +15,7 @@ export default function useRecipes() {
 
 
   const searchRecipes = (searchTerm: string, state: any) => {
-    // let filteredData = data?.filter(d => d.Title.includes(searchTerm))
+    // let filteredData = data?.filter(d => d.Title.includes(searchTerm) || d.Tags.includes(searchTerm))
 
     // if (filteredData) return filteredData;
 
