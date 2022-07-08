@@ -7,14 +7,9 @@ export interface ResultsPaneProps{
 
 export function ResultsPane(props: ResultsPaneProps){
 
-    const recipes: Recipe[] = [];
-
-    if(recipes.length == 0)
-        return null;
-
     return (
         <div className='relative w-full bg-white'>
-            { recipes.map((r: Recipe) => {return (<ResultCard recipe={r}></ResultCard>)})}
+            { props.searchResults?.map((r: Recipe) => {return (<ResultCard key={r.Id} recipe={r}></ResultCard>)})}
         </div>
     );
 }
