@@ -5,6 +5,7 @@ import useRecipes from "../../hooks/useRecipes";
 import { useHistory } from "react-router-dom";
 import { Recipe } from "../../model/recipe";
 import { mockData } from "../../mockData";
+import backgroundImage from "../../assets/pexels-valeria-boltneva-1860205.jpg"
 
 export default function Main() {
   const { fetchRecipes, searchRecipes } = useRecipes();
@@ -26,26 +27,20 @@ export default function Main() {
 
   };
 
-  const bindSearchResults = (recipes: Recipe[] | undefined) => {
-    console.log(recipes?.slice(0, 1));
-    setSearchResults(recipes ?? []);
-  };
+  const onSearchInputChange = (keyword: string) => {
+
+  }
+
 
   return (
-    <div className="grid grid-cols-1 grid-rows-1 overflow-hidden gap-0 max-h-screen justify-items-center">
-      <img
-        className="grid-cols-1 left-10 opacity-90 px-5 py-3 my-3 shadow-md mx-auto"
-        src="pexels-valeria-boltneva-1860205.jpg"
-      ></img>
-      <div className="relative bottom-56 grid-cols-1 z-10 w-2/5">
-        <SearchBar
-          search={onSearch}
-          resultClick={recipeCardOnClick}
-          data={data}
+    <div style={{backgroundImage: `url(${backgroundImage})`}} className="p-5 bg-origin-padding relative w-screen h-screen bg-no-repeat bg-top bg-cover overflow-hidden gap-0 max-h-screen justify-items-center items-center">
 
-        ></SearchBar>
-      </div>
-      <div></div>
+        <div className="relative top-1/3 left-1/3 grid-cols-1 z-10 w-2/5 justify-self-center">
+          <SearchBar
+            search={onSearch}
+            inputTextChange={onSearchInputChange}
+          ></SearchBar>
+        </div>
     </div>
   );
 }
