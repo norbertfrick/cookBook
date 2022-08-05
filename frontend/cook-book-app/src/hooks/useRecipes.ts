@@ -1,27 +1,38 @@
 import axios, { AxiosResponse } from "axios";
 import { useQuery } from "react-query";
 import { Recipe } from "../model/recipe";
-
+import { mockData } from "../mockData";
 
 const api = axios.create();
 
 export default function useRecipes() {
-  const fetchRecipes = async () => {
-    const result = await api.get(
-      `https://randomuser.me/api/?results=25`
-    );
-    return result.data.results;
+  const mockRecipes = (): Recipe[] => {
+    return mockData;
   };
 
+  const fetchRecipes = async (): Promise<Recipe[]> => {
+    const response = await fetch("");
 
-  const searchRecipes = (searchTerm: string, state: any) => {
-    // let filteredData = data?.filter(d => d.Title.includes(searchTerm) || d.Tags.includes(searchTerm))
-
-    // if (filteredData) return filteredData;
-
-    // return {};
-    console.log(state);
+    if (response.ok)
+      return response.json();
+    else
+      return Promise.reject()
+    
   }
 
-  return {fetchRecipes, searchRecipes};
+  
+
+  // const {data, status, error, isLoading} = useQuery<Recipe[]>("recipes", fetchRecipes)
+
+  // const searchRecipes = (searchTerm: string) => {
+  //   let filteredData = data?.filter(d => d.Title.includes(searchTerm) || d.Tags.includes(searchTerm))
+
+  //   if (filteredData) return filteredData;
+
+  //   return [];
+
+  // }
+
+  //return {data, status, error, isLoading, searchRecipes};
+  return [mockRecipes]
 }
