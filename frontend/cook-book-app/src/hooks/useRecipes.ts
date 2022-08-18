@@ -6,9 +6,7 @@ import { mockData } from "../mockData";
 const api = axios.create();
 
 export default function useRecipes() {
-  const mockRecipes = (): Recipe[] => {
-    return mockData;
-  };
+  const mockRecipes =  mockData;
 
   const fetchRecipes = async (): Promise<Recipe[]> => {
     const response = await fetch("");
