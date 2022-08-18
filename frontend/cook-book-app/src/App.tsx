@@ -15,6 +15,7 @@ function App() {
           <Switch>
             <Route path="/" exact component={MainPage}></Route>
             <Route path="/recipe/:id" exact component={RecipeDetailPage}></Route>
+            <Route path="/recipe/:id?edit=true" exact component={RecipeDetailPage}></Route>
             <Route path="/search" component={SearchPage}></Route>
           </Switch>
         </BrowserRouter>
