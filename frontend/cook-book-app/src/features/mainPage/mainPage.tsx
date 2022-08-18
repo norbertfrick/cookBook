@@ -16,7 +16,7 @@ export default function MainPage() {
 
 useEffect(() => {
   const getRec = async () =>{
-    let recipes = await mockRecipes();
+    let recipes = mockRecipes;
     setRecipes(recipes);
   }
   getRec();
