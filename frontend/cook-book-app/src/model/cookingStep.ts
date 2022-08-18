@@ -1,4 +1,4 @@
-export interface CookingStep{
+export type CookingStep = {
     ordinal: number;
     description: string;
 }

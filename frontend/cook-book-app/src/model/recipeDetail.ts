@@ -1,9 +1,12 @@
 import { CookingIngredient } from "./cookingIngredient";
 import { CookingStep } from "./cookingStep";
 
-export interface RecipeDetail {
-    id: string;
-    steps: CookingStep[];
-    ingredients: CookingIngredient[];
+export type RecipeDetail = {
+    Id: string;
+    RecipeId: string;
+    Steps: CookingStep[];
+    Ingredients: CookingIngredient[];
+    TimeToCook: number;
+    Servings: number;
 
 }
