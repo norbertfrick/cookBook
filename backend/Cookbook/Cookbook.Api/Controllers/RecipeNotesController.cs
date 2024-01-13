@@ -9,34 +9,28 @@ using Microsoft.AspNetCore.Mvc;
 namespace Cookbook.Api.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
-    public class RecipeController : ControllerBase
+    [Authorize]
+    [Route("api/recipe/notes")]
+    public class RecipeNotesController : ControllerBase
     {
-        [HttpGet]
-        public IActionResult Get()
-        {
-            return Ok();
-        }
-
-        [HttpDelete]
-        [Authorize]
-        public IActionResult Delete()
+        [HttpPost]
+        //not sure if necessary
+        public ActionResult<RecipeNotes> Get([FromQuery] Guid recipeId, [FromQuery] Guid userId)
         {
             return Ok();
         }
 
         [HttpPatch]
-        [Authorize]
-        public IActionResult Update()
+        public ActionResult<RecipeNotes> Update() // add args
         {
             return Ok();
         }
 
-        [HttpPost]
-        [Authorize]
-        public ActionResult<Recipe> Create()
+        [HttpDelete]
+        public ActionResult<RecipeNotes> Delete()
         {
             return Ok();
         }
+
     }
 }
