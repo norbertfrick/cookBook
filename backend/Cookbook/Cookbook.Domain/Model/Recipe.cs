@@ -13,18 +13,19 @@ namespace Cookbook.Domain.Model
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 
-        public List<CookingStep> Steps {get;set;}
+        public List<RecipeImage> Images { get; set; }
 
-        public List<Ingredient> Ingredients {get;set;}
-
-        public List<RecipeImage> Images {get;set;}
-
-        public List<RecipeCategory> Categories {get;set;}
-
-        public User Owner {get;set;}
+        public List<Category> Categories { get; set; }
 
         [ForeignKey("User")]
-        public Guid OwnerId {get;set;}
+        public Guid OwnerId { get; set; }
+
+        public User Owner { get; set; }
+
+        [ForeignKey("RecipeDetail")]
+        public Guid RecipeDetailId { get; set; }
+
+        public RecipeDetail Detail { get; set; }
 
 
 
