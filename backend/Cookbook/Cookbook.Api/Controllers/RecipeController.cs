@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Cookbook.Domain.Interfaces;
 using Cookbook.Domain.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,10 +13,27 @@ namespace Cookbook.Api.Controllers
     [Route("api/[controller]")]
     public class RecipeController : ControllerBase
     {
+        private readonly IRecipeService _recipeService;
+
+        public RecipeController(IRecipeService recipeService)
+        {
+            this._recipeService = recipeService;
+        }
+
         [HttpGet]
-        public IActionResult Get()
+        [Route("api/[controller]/recipe")]
+        public ActionResult Get()
         {
             return Ok();
+        }
+
+        [HttpGet]
+        [Route("api/[controller]/recipes")]
+        public ActionResult GetAll()
+        {
+            var result = _recipeService.GetAll();
+
+            return Ok(result);
         }
 
         [HttpDelete]
