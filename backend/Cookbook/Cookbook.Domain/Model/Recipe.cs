@@ -13,7 +13,10 @@ namespace Cookbook.Domain.Model
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 
-        public List<RecipeImage> Images { get; set; }
+        [ForeignKey("RecipeImage")]
+        public Guid TitleImageId { get; set; }
+        
+        public RecipeImage? TitleImage { get; set; }
 
         public List<Category> Categories { get; set; }
 

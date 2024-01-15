@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 
 namespace Cookbook.Domain.Model
 {
-    public class RecipeImage: UploadedImage
+    public class RecipeImage : UploadedImage
     {
-        
+        public Guid RecipeId { get; set; }
+
     }
 }

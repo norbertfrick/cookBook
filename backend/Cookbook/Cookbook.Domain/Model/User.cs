@@ -23,5 +23,7 @@ namespace Cookbook.Domain.Model
 
         [ForeignKey("UserProfile")]
         public Guid UserProfileId {get;set;}
+
+        public List<RecipeNotes>? Notes { get; set; }
     }
 }

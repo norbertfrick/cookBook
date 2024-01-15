@@ -14,9 +14,7 @@ namespace Cookbook.Domain.Model
 
         public List<Ingredient> Ingredients { get; set; }
 
-        [ForeignKey("RecipeNotes")]
-        public Guid RecipeNotesId { get; set; }
-        public RecipeNotes Notes { get; set; }
+        public List<RecipeNotes>? Notes { get; set; }
 
         public int NumberOfPortions { get; set; }
 
