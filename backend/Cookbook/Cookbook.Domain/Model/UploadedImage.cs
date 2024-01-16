@@ -13,7 +13,7 @@ namespace Cookbook.Domain.Model
 
         public string FilePath { get; set; }
 
-        [NotMapped]
-        public IFormFile File { get; set; }
+        public string ImageUrl { get; set; }
+
     }
 }

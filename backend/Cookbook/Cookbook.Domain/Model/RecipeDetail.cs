@@ -16,7 +16,7 @@ namespace Cookbook.Domain.Model
 
         public List<RecipeNotes>? Notes { get; set; }
 
-        public int NumberOfPortions { get; set; }
+        public int? NumberOfPortions { get; set; }
 
     }
 }

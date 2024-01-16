@@ -8,12 +8,14 @@ namespace Cookbook.Domain.Interfaces.Repositories
 {
     public interface IRepository<T>
     {
-        T GetById(Guid id);
+        Task<T> GetById(Guid id);
 
-        T Delete(Guid id);
+        Task<T> Delete(Guid id);
 
-        T Update(Guid id, T newObject);
+        Task<T> Update(Guid id, T newObject);
 
-        IEnumerable<T> GetAll();
+        Task<IEnumerable<T>> GetAll();
+
+        Task<T> Create(T entity);
     }
 }

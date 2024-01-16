@@ -15,6 +15,10 @@ namespace Cookbook.Domain.Model
 
         [ForeignKey("RecipeImage")]
         public Guid TitleImageId { get; set; }
+
+        public string Title { get; set; }
+
+        public string Description { get; set; }
         
         public RecipeImage? TitleImage { get; set; }
 
