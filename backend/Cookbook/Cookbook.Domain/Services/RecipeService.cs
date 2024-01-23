@@ -35,7 +35,7 @@ namespace Cookbook.Domain.Services
                 var result = await _recipeRepository.Create(recipe);
 
                 if (titleImage is not null)
-                    result.TitleImage = await _imageUploadService.UploadRecipeImage(titleImage, result.Id);
+                    result.TitleImage = (await _imageUploadService.UploadRecipeImage(titleImage, result.Id)).Data;
 
                 await _recipeRepository.Update(result.Id, result);
 
@@ -47,14 +47,30 @@ namespace Cookbook.Domain.Services
             }
         }
 
-        public Task<RequestResponse<Recipe>> DeleteRecipe(Guid id)
+        public async Task<RequestResponse<Recipe>> DeleteRecipe(Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var result = await _recipeRepository.Delete(id);
+                return new RequestResponse<Recipe>(true, result);
+            }
+            catch (Exception ex)
+            {
+                return new RequestResponse<Recipe>(false, null, ex.Message);
+            }
         }
 
-        public Task<RequestResponse<Recipe>> Get(Guid id)
+        public async Task<RequestResponse<Recipe>> Get(Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var result = await _recipeRepository.GetById(id);
+                return new RequestResponse<Recipe>(true, result);
+            }
+            catch (Exception ex)
+            {
+                return new RequestResponse<Recipe>(false, null, ex.Message);
+            }
         }
 
         public async Task<RequestResponse<List<Recipe>>> GetAll()
@@ -71,9 +87,17 @@ namespace Cookbook.Domain.Services
             }
         }
 
-        public Task<RequestResponse<Recipe>> UpdateRecipe(Guid id, Recipe recipe)
+        public async Task<RequestResponse<Recipe>> UpdateRecipe(Guid id, Recipe recipe)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var result = await _recipeRepository.Update(id, recipe);
+                return new RequestResponse<Recipe>(true, result);
+            }
+            catch (Exception ex)
+            {
+                return new RequestResponse<Recipe>(false, null, ex.Message);
+            }
         }
     }
 }
