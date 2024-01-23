@@ -1,4 +1,5 @@
-﻿using Cookbook.Domain.Model;
+﻿using Cookbook.Domain.Helpers;
+using Cookbook.Domain.Model;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,6 @@ namespace Cookbook.Domain.Interfaces.Services
 {
     public interface IImageService
     {
-        Task<RecipeImage> UploadRecipeImage(IFormFile image, Guid recipeId);
+        Task<RequestResponse<RecipeImage>> UploadRecipeImage(IFormFile image, Guid recipeId);
     }
 }
