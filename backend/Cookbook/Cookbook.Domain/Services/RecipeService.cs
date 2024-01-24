@@ -17,13 +17,11 @@ namespace Cookbook.Domain.Services
     public class RecipeService : IRecipeService
     {
         private readonly IRecipeRepository _recipeRepository;
-        private readonly IRecipeDetailService _detailService;
         private readonly IImageService _imageUploadService;
 
         public RecipeService(IRecipeRepository repo, IRecipeDetailService detailService, IImageService imageUpload)
         {
             this._recipeRepository = repo;
-            this._detailService = detailService;
             this._imageUploadService = imageUpload;
         }
 
@@ -34,8 +32,13 @@ namespace Cookbook.Domain.Services
                 recipe.Detail = detail;
                 var result = await _recipeRepository.Create(recipe);
 
-                if (titleImage is not null)
-                    result.TitleImage = (await _imageUploadService.UploadRecipeImage(titleImage, result.Id)).Data;
+                if (titleImage is null)
+                    return new RequestResponse<Recipe>(true, result);
+
+                var uploadedImage = await _imageUploadService.UploadRecipeImage(titleImage, result.Id);
+
+                if (!uploadedImage.IsSuccess)
+                    return new RequestResponse<Recipe>(true, result, uploadedImage.Message);
 
                 await _recipeRepository.Update(result.Id, result);
 
