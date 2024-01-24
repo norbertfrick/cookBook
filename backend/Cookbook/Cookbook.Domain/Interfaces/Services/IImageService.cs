@@ -12,5 +12,7 @@ namespace Cookbook.Domain.Interfaces.Services
     public interface IImageService
     {
         Task<RequestResponse<RecipeImage>> UploadRecipeImage(IFormFile image, Guid recipeId);
+
+        Task<RequestResponse<RecipeImage>> DeleteImage(Guid imageId);
     }
 }
