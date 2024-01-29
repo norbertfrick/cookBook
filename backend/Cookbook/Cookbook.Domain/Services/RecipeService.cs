@@ -17,13 +17,11 @@ namespace Cookbook.Domain.Services
     public class RecipeService : IRecipeService
     {
         private readonly IRecipeRepository _recipeRepository;
-        private readonly IRecipeDetailService _detailService;
         private readonly IImageService _imageUploadService;
 
         public RecipeService(IRecipeRepository repo, IRecipeDetailService detailService, IImageService imageUpload)
         {
             this._recipeRepository = repo;
-            this._detailService = detailService;
             this._imageUploadService = imageUpload;
         }
 
@@ -34,8 +32,13 @@ namespace Cookbook.Domain.Services
                 recipe.Detail = detail;
                 var result = await _recipeRepository.Create(recipe);
 
-                if (titleImage is not null)
-                    result.TitleImage = await _imageUploadService.UploadRecipeImage(titleImage, result.Id);
+                if (titleImage is null)
+                    return new RequestResponse<Recipe>(true, result);
+
+                var uploadedImage = await _imageUploadService.UploadRecipeImage(titleImage, result.Id);
+
+                if (!uploadedImage.IsSuccess)
+                    return new RequestResponse<Recipe>(true, result, uploadedImage.Message);
 
                 await _recipeRepository.Update(result.Id, result);
 
@@ -47,14 +50,30 @@ namespace Cookbook.Domain.Services
             }
         }
 
-        public Task<RequestResponse<Recipe>> DeleteRecipe(Guid id)
+        public async Task<RequestResponse<Recipe>> DeleteRecipe(Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var result = await _recipeRepository.Delete(id);
+                return new RequestResponse<Recipe>(true, result);
+            }
+            catch (Exception ex)
+            {
+                return new RequestResponse<Recipe>(false, null, ex.Message);
+            }
         }
 
-        public Task<RequestResponse<Recipe>> Get(Guid id)
+        public async Task<RequestResponse<Recipe>> Get(Guid id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var result = await _recipeRepository.GetById(id);
+                return new RequestResponse<Recipe>(true, result);
+            }
+            catch (Exception ex)
+            {
+                return new RequestResponse<Recipe>(false, null, ex.Message);
+            }
         }
 
         public async Task<RequestResponse<List<Recipe>>> GetAll()
@@ -71,9 +90,17 @@ namespace Cookbook.Domain.Services
             }
         }
 
-        public Task<RequestResponse<Recipe>> UpdateRecipe(Guid id, Recipe recipe)
+        public async Task<RequestResponse<Recipe>> UpdateRecipe(Guid id, Recipe recipe)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var result = await _recipeRepository.Update(id, recipe);
+                return new RequestResponse<Recipe>(true, result);
+            }
+            catch (Exception ex)
+            {
+                return new RequestResponse<Recipe>(false, null, ex.Message);
+            }
         }
     }
 }
