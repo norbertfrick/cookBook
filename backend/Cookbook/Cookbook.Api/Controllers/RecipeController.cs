@@ -3,7 +3,9 @@ using Cookbook.Api.Requests;
 using Cookbook.Domain.Interfaces;
 using Cookbook.Domain.Model;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Cookbook.Api.Controllers
 {
@@ -21,40 +23,39 @@ namespace Cookbook.Api.Controllers
         }
 
         [HttpGet]
-        [Route("api/[controller]/{:id}")]
+        [Route("{id}")]
         public async Task<ActionResult> Get(Guid id)
             => (await _recipeService.Get(id)).ToRequestResponse();
 
         [HttpGet]
-        [Route("api/[controller]")]
         public async Task<ActionResult> GetAll()
             => (await _recipeService.GetAll()).ToRequestResponse();
 
         [HttpGet]
-        [Route("api/[controller]/{:id}/detail")]
+        [Route("{id}/detail")]
         public async Task<ActionResult> GetRecipeDetail(Guid id)
             => (await _recipeDetailService.GetRecipeDetail(id)).ToRequestResponse();
 
         [HttpPut]
-        [Route("api/[controller]/{:id}/detail")]
+        [Route("{id}/detail")]
         public async Task<ActionResult> UpdateRecipeDetail([FromBody] RecipeDetail detail)
             => (await _recipeDetailService.UpdateRecipeDetail(detail.Id, detail)).ToRequestResponse();
 
         [HttpDelete]
         [Authorize]
-        [Route("api/[controller]/{:id}")]
+        [Route("{id}")]
         public async Task<ActionResult> Delete(Guid id)
             => (await _recipeService.DeleteRecipe(id)).ToRequestResponse();
 
         [HttpPut]
         [Authorize]
-        [Route("api/[controller]/{:id}")]
+        [Route("{id}")]
         public async Task<ActionResult> Update(Guid id, [FromBody] Recipe recipe) 
             => (await _recipeService.UpdateRecipe(id, recipe)).ToRequestResponse();
 
         [HttpPost]
         [Authorize]
-        public async Task<ActionResult> Create([FromBody] CreateRecipeRequest request)
+        public async Task<ActionResult> Create([FromForm] CreateRecipeRequest request)
         {
             var recipe = new Recipe
             {
@@ -63,8 +64,6 @@ namespace Cookbook.Api.Controllers
                 OwnerId = request.UserdId,
                 Categories = request.Categories,
             };
-
-            
 
             var detail = new RecipeDetail
             {
