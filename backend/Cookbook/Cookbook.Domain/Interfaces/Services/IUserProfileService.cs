@@ -8,7 +8,7 @@ namespace Cookbook.Domain.Interfaces
 {
     public interface IUserProfileService
     {
-        UserProfile GetUserProfile(Guid userId);
+        Task<UserProfile> GetUserProfile(Guid userId);
 
         UserProfile CreateUserProfile(User user, UserProfile profile);
 

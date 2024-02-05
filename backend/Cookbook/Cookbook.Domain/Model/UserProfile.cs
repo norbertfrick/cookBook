@@ -11,7 +11,9 @@ namespace Cookbook.Domain.Model
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid Id { get; set; }
+        public Guid ProfileId { get; set; }
+
+        public Guid UserId { get; set; }
 
         public string FirstName { get; set; }
 
@@ -19,6 +21,6 @@ namespace Cookbook.Domain.Model
 
         public string Email { get; set; }
 
-        public string Picture { get; set; }
+        public string PictureUrl { get; set; }
     }
 }

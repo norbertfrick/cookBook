@@ -1,3 +1,7 @@
+using Cookbook.Domain.DTO;
+using Cookbook.Domain.Helpers;
+using Cookbook.Domain.Model;
+using Cookbook.Domain.Wrappers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +11,8 @@ namespace Cookbook.Domain.Interfaces
 {
     public interface ILoginService
     {
-        
+        public Task<RequestResponse<TokenWrapper>> Login(string email, string password);
+
+        public Task<RequestResponse<string>> Logout(Guid userId);
     }
 }
