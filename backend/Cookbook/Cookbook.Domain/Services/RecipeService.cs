@@ -65,10 +65,25 @@ namespace Cookbook.Domain.Services
 
         public async Task<RequestResponse<Recipe>> Get(Guid id)
         {
+            RequestResponse<Recipe> result = new(true, null);
             try
             {
-                var result = await _recipeRepository.GetById(id);
-                return new RequestResponse<Recipe>(true, result);
+                var recipe = await _recipeRepository.GetById(id);
+
+                if (recipe.TitleImageId != Guid.Empty)
+                {
+                    var imageDeletionResult = await _imageUploadService.DeleteImage(recipe.TitleImageId);
+
+                    if (!imageDeletionResult.IsSuccess)
+                    {
+                        result.IsSuccess = false;
+                        result.Message += imageDeletionResult.Message;
+                    }
+                }
+                
+                var deletionResult = await _recipeRepository.Delete(id);
+
+                return new RequestResponse<Recipe>(true, deletionResult);
             }
             catch (Exception ex)
             {
