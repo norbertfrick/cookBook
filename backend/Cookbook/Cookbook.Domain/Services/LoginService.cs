@@ -36,17 +36,16 @@ namespace Cookbook.Domain.Services
             if (user == null)
                 return new RequestResponse<TokenWrapper>(false, null, "User not found.");
 
-            if (!_passwordService.ComparePassword(password + user.PasswordSalt, user.Password))
+            if (!_passwordService.IsPasswordValid(password, user.Password, user.PasswordSalt))
                 return new RequestResponse<TokenWrapper>(false, null, "Password not correct.");
             try
             {
-                var token = _tokenProvider.GenerateToken(new Dictionary<string, string> { { "email", user.Email } });
-                var refreshToken = _tokenProvider.GenerateRefreshToken();
+                var token = _tokenProvider.GenerateToken(CreateClaims(user));
+                var refreshToken = _tokenProvider.GenerateRefreshToken(user.Id);
 
                 await Task.WhenAll(token, refreshToken);
 
                 user.RefreshToken = refreshToken.Result;
-
                 await _userRepository.Update(user.Id, user);
 
                 return new RequestResponse<TokenWrapper>(true, new TokenWrapper(token.Result, refreshToken.Result, user.Id));
@@ -76,6 +75,53 @@ namespace Cookbook.Domain.Services
                 return new RequestResponse<string>(false, null, ex.Message);
             }
 
+        }
+
+        public async Task<RequestResponse<TokenWrapper>> RefreshToken(string refreshToken)
+        {
+            //should be able to get email from token claims and get the user that way
+            //this is a temporary solution
+            var userId = await _tokenProvider.GetUserIdByRefreshToken(refreshToken);
+            var user = await _userRepository.GetById(userId);
+
+            var newToken = await _tokenProvider.GenerateToken(CreateClaims(user));
+
+            var tokenWrapper = newToken.Equals(string.Empty) ? null : new TokenWrapper(newToken, refreshToken, userId);
+
+            return new RequestResponse<TokenWrapper>(!(tokenWrapper is null), tokenWrapper, tokenWrapper is null ? "Failed to generate new token" : string.Empty);
+
+        }
+
+        public async Task<RequestResponse<Nullable<Guid>>> RegisterUser(string username, string password)
+        {
+            var existingUser = await _userRepository.GetByEmail(username);
+
+            if (existingUser is null)
+                return new RequestResponse<Nullable<Guid>>(false, null, "User with that email already exists.");
+
+            var passwordHash = _passwordService.HashPassword(password);
+
+            var user = new User();
+            user.Email = username;
+            user.Password = passwordHash.password;
+            user.PasswordSalt = passwordHash.salt;
+            try
+            {
+                var createdUser = await _userRepository.Create(user);
+
+                return new RequestResponse<Nullable<Guid>>(true, createdUser.Id);
+            }
+            catch (Exception ex)
+            {
+                return new RequestResponse<Nullable<Guid>>(false, null, ex.Message);
+            }
+           
+
+        }
+
+        private Dictionary<string, string> CreateClaims(User user)
+        {
+            return new Dictionary<string, string> { { "email", user.Email } };
         }
     }
 }

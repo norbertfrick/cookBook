@@ -27,5 +27,7 @@ namespace Cookbook.Domain.Model
         public Guid UserProfileId {get;set;}
 
         public List<RecipeNotes>? Notes { get; set; }
+
+        public List<Recipe> Recipes { get; set; }
     }
 }

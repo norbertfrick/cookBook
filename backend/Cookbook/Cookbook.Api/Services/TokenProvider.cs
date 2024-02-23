@@ -1,4 +1,6 @@
-﻿using Cookbook.Domain.Interfaces.Services;
+﻿using Cookbook.Domain.Interfaces.Repositories;
+using Cookbook.Domain.Interfaces.Services;
+using Cookbook.Domain.Model;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -13,25 +15,51 @@ namespace Cookbook.Api.Services
     {
         private readonly IConfiguration _config;
 
-        public TokenProvider(IConfiguration config)
+        private readonly IRefreshTokenRepository _refreshTokenRepository;
+
+        public TokenProvider(IConfiguration config, IRefreshTokenRepository tokenRepository)
         {
             this._config = config;
+            this._refreshTokenRepository = tokenRepository;
         }
 
-        public async Task<string> GenerateRefreshToken()
+        public async Task<string> GenerateRefreshToken(Guid userId)
         {
             var randomNumber = new byte[32];
             using (var generator = RandomNumberGenerator.Create())
             {
                 generator.GetBytes(randomNumber);
-                return Convert.ToBase64String(randomNumber);
+                try
+                {
+                    var refreshToken = Convert.ToBase64String(randomNumber);
+                    await CreateUserRefreshToken(refreshToken, userId);
+
+                    return refreshToken;
+                }
+                catch (Exception ex)
+                {
+                    return string.Empty;
+                } 
             }
+        }
+
+        public async Task<string> GenerateToken(string refreshToken, Dictionary<string, string> claims)
+        {
+            if (await IsRefreshTokenExpired(refreshToken))
+                return string.Empty;
+
+            var token = await GenerateToken(claims);
+
+            return token;
+        }
+
+        public async Task<Guid> GetUserIdByRefreshToken(string refreshToken)
+        {
+            return (await _refreshTokenRepository.GetByTokenValue(refreshToken)).UserId;
         }
 
         public async Task<string> GenerateToken(Dictionary<string, string> claims)
         {
-
-
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenKey = Encoding.UTF8.GetBytes(_config["Jwt:Secret"]);
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -47,14 +75,45 @@ namespace Cookbook.Api.Services
             return tokenHandler.WriteToken(token);
         }
 
-    private List<Claim> CreateClaims(Dictionary<string, string> claimsDict)
-    {
-        var claims = new List<Claim>();
+        private List<Claim> CreateClaims(Dictionary<string, string> claimsDict)
+        {
+            var claims = new List<Claim>();
 
-        foreach (var claim in claimsDict)
-            claims.Add(new Claim(claim.Key, claim.Value));
+            foreach (var claim in claimsDict)
+                claims.Add(new Claim(claim.Key, claim.Value));
 
-        return claims;
+            return claims;
+        }
+
+        private Task<UserRefreshToken> CreateUserRefreshToken(string tokenString, Guid userId)
+        {
+            var tokenExpirationInterval = _config.GetValue<int>("Jwt:RefreshTokenExpirationInterval");
+            var token = new UserRefreshToken()
+            {
+                IssuedAt = DateTime.UtcNow,
+                IsExpired = false,
+                UserId = userId,
+                RefreshToken = tokenString,
+                ExpiresAt = DateTime.UtcNow.AddMinutes(tokenExpirationInterval),
+            };
+
+            return _refreshTokenRepository.Create(token);
+        }
+
+        private async Task<bool> IsRefreshTokenExpired(string tokenString)
+        {
+            var userRefreshToken = await _refreshTokenRepository.GetByTokenValue(tokenString);
+
+            if (userRefreshToken.ExpiresAt > DateTime.UtcNow)
+            {
+                userRefreshToken.IsExpired = true;
+                await _refreshTokenRepository.Update(userRefreshToken.Id, userRefreshToken);
+            }
+
+            return userRefreshToken.IsExpired;
+
+        }
+
+        
     }
-}
 }

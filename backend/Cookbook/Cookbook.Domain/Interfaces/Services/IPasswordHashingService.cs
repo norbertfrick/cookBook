@@ -8,8 +8,8 @@ namespace Cookbook.Domain.Interfaces.Services
 {
     public interface IPasswordHashingService
     {
-        public (string password, string salt) HashPassword();
+        public (string password, string salt) HashPassword(string password);
 
-        public bool ComparePassword(string password1, string password2);
+        public bool IsPasswordValid(string password1, string hash, string salt);
     }
 }
