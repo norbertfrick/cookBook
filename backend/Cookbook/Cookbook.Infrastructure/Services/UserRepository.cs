@@ -18,7 +18,7 @@ namespace Cookbook.Infrastructure.Services
 
         private readonly CookbookDbContext _context;
 
-        public async Task<User> Create(User entity)
+        public User Create(User entity)
         {
             var result = _context.Users.Add(entity);
             _context.SaveChanges();
@@ -26,7 +26,7 @@ namespace Cookbook.Infrastructure.Services
             return result.Entity;
         }
 
-        public Task<User> Delete(Guid id)
+        public User Delete(Guid id)
         {
             throw new NotImplementedException();
         }
@@ -43,10 +43,10 @@ namespace Cookbook.Infrastructure.Services
 
         public Task<User> GetById(Guid id)
         {
-            throw new NotImplementedException();
+            return _context.Users.FirstOrDefaultAsync(u => string.Equals(u.Id, id));
         }
 
-        public Task<User> Update(Guid id, User newObject)
+        public User Update(Guid id, User newObject)
         {
             throw new NotImplementedException();
         }

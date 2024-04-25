@@ -10,12 +10,12 @@ namespace Cookbook.Domain.Interfaces.Repositories
     {
         Task<T> GetById(Guid id);
 
-        Task<T> Delete(Guid id);
+        T Delete(Guid id);
 
-        Task<T> Update(Guid id, T newObject);
+        T Update(Guid id, T newObject);
 
         Task<IEnumerable<T>> GetAll();
 
-        Task<T> Create(T entity);
+        T Create(T entity);
     }
 }

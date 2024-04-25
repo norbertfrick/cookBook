@@ -23,7 +23,7 @@ namespace Cookbook.Api.Services
             this._refreshTokenRepository = tokenRepository;
         }
 
-        public async Task<string> GenerateRefreshToken(Guid userId)
+        public string GenerateRefreshToken(Guid userId)
         {
             var randomNumber = new byte[64];
             using (var generator = RandomNumberGenerator.Create())
@@ -32,7 +32,7 @@ namespace Cookbook.Api.Services
                 try
                 {
                     var refreshToken = Convert.ToBase64String(randomNumber);
-                    await CreateUserRefreshToken(refreshToken, userId);
+                    CreateUserRefreshToken(refreshToken, userId);
 
                     return refreshToken;
                 }
@@ -48,7 +48,7 @@ namespace Cookbook.Api.Services
             if (await IsRefreshTokenExpired(refreshToken))
                 return string.Empty;
 
-            var token = await GenerateToken(claims);
+            var token = GenerateToken(claims);
 
             return token;
         }
@@ -58,7 +58,7 @@ namespace Cookbook.Api.Services
             return (await _refreshTokenRepository.GetByTokenValue(refreshToken)).UserId;
         }
 
-        public async Task<string> GenerateToken(Dictionary<string, string> claims)
+        public string GenerateToken(Dictionary<string, string> claims)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenKey = Encoding.UTF8.GetBytes(_config["Jwt:Secret"]);
@@ -86,7 +86,7 @@ namespace Cookbook.Api.Services
             return claims;
         }
 
-        private Task<UserRefreshToken> CreateUserRefreshToken(string tokenString, Guid userId)
+        private UserRefreshToken CreateUserRefreshToken(string tokenString, Guid userId)
         {
             var tokenExpirationInterval = _config.GetValue<int>("Jwt:RefreshTokenExpirationInterval");
             var token = new UserRefreshToken()
@@ -108,7 +108,7 @@ namespace Cookbook.Api.Services
             if (userRefreshToken.ExpiresAt > DateTime.UtcNow)
             {
                 userRefreshToken.IsExpired = true;
-                await _refreshTokenRepository.Update(userRefreshToken.Id, userRefreshToken);
+                _refreshTokenRepository.Update(userRefreshToken.Id, userRefreshToken);
             }
 
             return userRefreshToken.IsExpired;

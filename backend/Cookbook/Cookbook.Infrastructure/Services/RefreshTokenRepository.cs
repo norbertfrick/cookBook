@@ -1,11 +1,6 @@
 ﻿using Cookbook.Domain.Interfaces.Repositories;
 using Cookbook.Domain.Model;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Cookbook.Infrastructure.Services
 {
@@ -16,7 +11,7 @@ namespace Cookbook.Infrastructure.Services
         {
             _context = context;
         }
-        public async Task<UserRefreshToken> Create(UserRefreshToken entity)
+        public UserRefreshToken Create(UserRefreshToken entity)
         {
             var result = _context.RefreshTokens.Add(entity);
 
@@ -25,7 +20,7 @@ namespace Cookbook.Infrastructure.Services
             return result.Entity;
         }
 
-        public Task<UserRefreshToken> Delete(Guid id)
+        public UserRefreshToken Delete(Guid id)
         {
             throw new NotImplementedException();
         }
@@ -45,7 +40,7 @@ namespace Cookbook.Infrastructure.Services
             return _context.RefreshTokens.FirstOrDefaultAsync(t => t.RefreshToken == token);
         }
 
-        public Task<UserRefreshToken> Update(Guid id, UserRefreshToken newObject)
+        public UserRefreshToken Update(Guid id, UserRefreshToken newObject)
         {
             throw new NotImplementedException();
         }

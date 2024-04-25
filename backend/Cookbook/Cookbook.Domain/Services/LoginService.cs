@@ -45,9 +45,7 @@ namespace Cookbook.Domain.Services
                 var token = _tokenProvider.GenerateToken(CreateClaims(user));
                 var refreshToken = _tokenProvider.GenerateRefreshToken(user.Id);
 
-                await Task.WhenAll(token, refreshToken);
-
-                return new RequestResponse<TokenWrapper>(true, new TokenWrapper(token.Result, refreshToken.Result, user.Id));
+                return new RequestResponse<TokenWrapper>(true, new TokenWrapper(token, refreshToken, user.Id));
             }
             catch (Exception ex)
             {
@@ -63,7 +61,7 @@ namespace Cookbook.Domain.Services
                 var refreshToken = await _refreshTokenRepository.GetByTokenValue(tokenValue);
                 refreshToken.IsExpired = true;
 
-                await _refreshTokenRepository.Update(refreshToken.Id, refreshToken);
+                _refreshTokenRepository.Update(refreshToken.Id, refreshToken);
 
                 return new RequestResponse<string>(true, null);
 
@@ -82,7 +80,7 @@ namespace Cookbook.Domain.Services
             var userId = await _tokenProvider.GetUserIdByRefreshToken(refreshToken);
             var user = await _userRepository.GetById(userId);
 
-            var newToken = await _tokenProvider.GenerateToken(CreateClaims(user));
+            var newToken = _tokenProvider.GenerateToken(CreateClaims(user));
 
             var tokenWrapper = newToken.Equals(string.Empty) ? null : new TokenWrapper(newToken, refreshToken, userId);
 
@@ -105,7 +103,7 @@ namespace Cookbook.Domain.Services
             user.PasswordSalt = passwordHash.salt;
             try
             {
-                var createdUser = await _userRepository.Create(user);
+                var createdUser = _userRepository.Create(user);
 
                 return new RequestResponse<Nullable<Guid>>(true, createdUser.Id);
             }
@@ -113,8 +111,6 @@ namespace Cookbook.Domain.Services
             {
                 return new RequestResponse<Nullable<Guid>>(false, null, ex.Message);
             }
-           
-
         }
 
         private Dictionary<string, string> CreateClaims(User user)

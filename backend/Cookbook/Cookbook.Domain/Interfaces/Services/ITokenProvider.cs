@@ -8,11 +8,11 @@ namespace Cookbook.Domain.Interfaces.Services
 {
     public interface ITokenProvider
     {
-        public Task<string> GenerateToken(Dictionary<string, string> claims);
+        public string GenerateToken(Dictionary<string, string> claims);
 
         public Task<string> GenerateToken(string refreshToken, Dictionary<string, string> claims);
 
-        public Task<string> GenerateRefreshToken(Guid userId);
+        public string GenerateRefreshToken(Guid userId);
 
         public Task<Guid> GetUserIdByRefreshToken(string refreshToken);
 

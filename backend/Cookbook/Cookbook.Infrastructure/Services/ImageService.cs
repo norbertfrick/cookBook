@@ -31,7 +31,7 @@ namespace Cookbook.Infrastructure.Services
             if (!DeleteImage(imageData.FilePath))
                 return new RequestResponse<RecipeImage>(false, null, "Image deletion failed.");
 
-            await _recipeImageRepository.Delete(imageId);
+            _recipeImageRepository.Delete(imageId);
 
             return new RequestResponse<RecipeImage>(true, imageData);
 
@@ -42,7 +42,7 @@ namespace Cookbook.Infrastructure.Services
             var storagePath = _configuration.GetSection(RECIPE_IMAGE_SETTING_CONST).Value;
             var recipeImage = CreateRecipeImage(image.FileName, storagePath, recipeId);
 
-            var result = await _recipeImageRepository.Create(recipeImage);
+            var result = _recipeImageRepository.Create(recipeImage);
 
             var imageSave = await SaveImageToStorage(image, result);
 

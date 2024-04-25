@@ -63,7 +63,7 @@ namespace Cookbook.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<RequestResponse<TokenWrapper>>> RefreshToken([FromBody] string refreshToken)
         {
-            var result = await _loginService.RefreshToken(refreshToken);
+            var result = await _loginService.RefreshToken(_cookieHelper.GetRefreshTokenFromRequest(HttpContext));
 
             if (result.IsSuccess)
             {
@@ -73,5 +73,14 @@ namespace Cookbook.Api.Controllers
 
             return result.ToRequestResponse();
         }
+
+        [Route("/isloggedin")]
+        [HttpGet]
+        [Authorize]
+        public async Task<ActionResult<bool>> IsLoggedIn()
+        {
+            return true;
+        }
+
     }
 }

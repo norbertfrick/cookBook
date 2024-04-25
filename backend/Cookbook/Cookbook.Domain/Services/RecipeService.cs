@@ -30,7 +30,7 @@ namespace Cookbook.Domain.Services
             try
             {
                 recipe.Detail = detail;
-                var result = await _recipeRepository.Create(recipe);
+                var result = _recipeRepository.Create(recipe);
 
                 if (titleImage is null)
                     return new RequestResponse<Recipe>(true, result);
@@ -40,7 +40,7 @@ namespace Cookbook.Domain.Services
                 if (!uploadedImage.IsSuccess)
                     return new RequestResponse<Recipe>(true, result, uploadedImage.Message);
 
-                await _recipeRepository.Update(result.Id, result);
+                _recipeRepository.Update(result.Id, result);
 
                 return new RequestResponse<Recipe>(true, result);
             }
@@ -54,7 +54,7 @@ namespace Cookbook.Domain.Services
         {
             try
             {
-                var result = await _recipeRepository.Delete(id);
+                var result = _recipeRepository.Delete(id);
                 return new RequestResponse<Recipe>(true, result);
             }
             catch (Exception ex)
@@ -81,7 +81,7 @@ namespace Cookbook.Domain.Services
                     }
                 }
                 
-                var deletionResult = await _recipeRepository.Delete(id);
+                var deletionResult = _recipeRepository.Delete(id);
 
                 return new RequestResponse<Recipe>(true, deletionResult);
             }
@@ -109,7 +109,7 @@ namespace Cookbook.Domain.Services
         {
             try
             {
-                var result = await _recipeRepository.Update(id, recipe);
+                var result = _recipeRepository.Update(id, recipe);
                 return new RequestResponse<Recipe>(true, result);
             }
             catch (Exception ex)
