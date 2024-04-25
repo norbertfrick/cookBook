@@ -13,8 +13,8 @@ namespace Cookbook.Api
     {
         public static void AddApiModule(this IServiceCollection services)
         {
-            services.AddScoped<ITokenProvider, TokenProvider>();
-            services.AddScoped<ICookieHelperService, CookieHelperService>();
+            services.AddTransient<ITokenProvider, TokenProvider>();
+            services.AddTransient<ICookieHelperService, CookieHelperService>();
         }
 
         public static void AddCookbookAuthentication(this IServiceCollection services, IConfiguration config)
@@ -39,14 +39,19 @@ namespace Cookbook.Api
                     ValidAudience = jwtIssuer,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
                 };
-                options.Events.OnMessageReceived = context =>
-                {
-                    if (context.Request.Cookies.ContainsKey(eCookieType.AccessToken.GetDescription()))
-                        context.Token = context.Request.Cookies[eCookieType.AccessToken.GetDescription()];
 
-                    return Task.CompletedTask;
+                options.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        if (context.Request.Cookies.ContainsKey(eCookieType.AccessToken.GetDescription()))
+                            context.Token = context.Request.Cookies[eCookieType.AccessToken.GetDescription()];
+
+                        return Task.CompletedTask;
+                    }
                 };
             });
+
         }
     }
 }

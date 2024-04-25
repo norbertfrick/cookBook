@@ -20,13 +20,15 @@ namespace Cookbook.Domain.Services
         private readonly IUserRepository _userRepository;
         private readonly IUserProfileService _userProfileService;
         private readonly IPasswordHashingService _passwordService;
+        private readonly IRefreshTokenRepository _refreshTokenRepository;
 
-        public LoginService(ITokenProvider tokenProvider, IUserRepository userRepository, IPasswordHashingService passwordService, IUserProfileService profileService)
+        public LoginService(ITokenProvider tokenProvider, IUserRepository userRepository, IPasswordHashingService passwordService, /*IUserProfileService profileService,*/ IRefreshTokenRepository refreshTokenRepository)
         {
             this._tokenProvider = tokenProvider;
             this._userRepository = userRepository;
             this._passwordService = passwordService;
-            this._userProfileService = profileService;
+            //this._userProfileService = profileService;
+            _refreshTokenRepository = refreshTokenRepository;
         }
 
         public async Task<RequestResponse<TokenWrapper>> Login(string email, string password)
@@ -45,9 +47,6 @@ namespace Cookbook.Domain.Services
 
                 await Task.WhenAll(token, refreshToken);
 
-                user.RefreshToken = refreshToken.Result;
-                await _userRepository.Update(user.Id, user);
-
                 return new RequestResponse<TokenWrapper>(true, new TokenWrapper(token.Result, refreshToken.Result, user.Id));
             }
             catch (Exception ex)
@@ -57,15 +56,14 @@ namespace Cookbook.Domain.Services
             
         }
 
-        public async Task<RequestResponse<string>> Logout(Guid id)
+        public async Task<RequestResponse<string>> Logout(Guid id, string tokenValue)
         {
             try
             {
-                var user = await _userRepository.GetById(id);
+                var refreshToken = await _refreshTokenRepository.GetByTokenValue(tokenValue);
+                refreshToken.IsExpired = true;
 
-                user.RefreshToken = string.Empty;
-
-                await _userRepository.Update(id, user);
+                await _refreshTokenRepository.Update(refreshToken.Id, refreshToken);
 
                 return new RequestResponse<string>(true, null);
 
@@ -96,7 +94,7 @@ namespace Cookbook.Domain.Services
         {
             var existingUser = await _userRepository.GetByEmail(username);
 
-            if (existingUser is null)
+            if (existingUser is not null)
                 return new RequestResponse<Nullable<Guid>>(false, null, "User with that email already exists.");
 
             var passwordHash = _passwordService.HashPassword(password);

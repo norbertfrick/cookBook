@@ -22,6 +22,7 @@ namespace Cookbook.Api.Services
 
         public HttpContext AddJwtCookie(HttpContext context, string jwtToken)
         {
+            RemoveJwtCookie(context);
             context.Response.Cookies.Append(eCookieType.AccessToken.GetDescription(), jwtToken, _defaultCookieOptions);
 
             return context;
@@ -29,6 +30,7 @@ namespace Cookbook.Api.Services
 
         public HttpContext AddRefreshTokenCookie(HttpContext context, string jwtToken)
         {
+            RemoveRefreshTokenCookie(context);
             context.Response.Cookies.Append(eCookieType.RefreshToken.GetDescription(), jwtToken, _defaultCookieOptions);
 
             return context;

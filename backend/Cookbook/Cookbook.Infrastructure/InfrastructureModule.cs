@@ -17,9 +17,6 @@ namespace Cookbook.Infrastructure
             //services.AddScoped<IImageService, ImageService>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
-
-
-
         }
     }
 }

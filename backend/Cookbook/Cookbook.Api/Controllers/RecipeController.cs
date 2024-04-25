@@ -37,6 +37,7 @@ namespace Cookbook.Api.Controllers
             => (await _recipeDetailService.GetRecipeDetail(id)).ToRequestResponse();
 
         [HttpPut]
+        [Authorize]
         [Route("{id}/detail")]
         public async Task<ActionResult> UpdateRecipeDetail([FromBody] RecipeDetail detail)
             => (await _recipeDetailService.UpdateRecipeDetail(detail.Id, detail)).ToRequestResponse();

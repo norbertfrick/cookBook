@@ -13,7 +13,7 @@ namespace Cookbook.Domain.Model
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
-        [ForeignKey("User")]
+        [ForeignKey("Users")]
         public Guid UserId { get; set; }
 
         public string RefreshToken { get; set; }

@@ -13,7 +13,7 @@ namespace Cookbook.Domain.Interfaces
     {
         public Task<RequestResponse<TokenWrapper>> Login(string email, string password);
 
-        public Task<RequestResponse<string>> Logout(Guid userId);
+        public Task<RequestResponse<string>> Logout(Guid userId, string refreshTokenValue);
 
         public Task<RequestResponse<Nullable<Guid>>> RegisterUser(string username, string password);
 

@@ -19,15 +19,13 @@ namespace Cookbook.Domain.Model
 
         public string PasswordSalt { get; set; }
 
-        public string RefreshToken { get; set; }
+        //public UserProfile Profile {get;set;}
 
-        public UserProfile Profile {get;set;}
+        //[ForeignKey("UserProfile")]
+        //public Guid UserProfileId {get;set;}
 
-        [ForeignKey("UserProfile")]
-        public Guid UserProfileId {get;set;}
+        //public List<RecipeNotes>? Notes { get; set; }
 
-        public List<RecipeNotes>? Notes { get; set; }
-
-        public List<Recipe> Recipes { get; set; }
+        //public List<Recipe> Recipes { get; set; }
     }
 }

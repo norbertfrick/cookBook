@@ -25,7 +25,7 @@ namespace Cookbook.Api.Services
 
         public async Task<string> GenerateRefreshToken(Guid userId)
         {
-            var randomNumber = new byte[32];
+            var randomNumber = new byte[64];
             using (var generator = RandomNumberGenerator.Create())
             {
                 generator.GetBytes(randomNumber);
@@ -68,6 +68,7 @@ namespace Cookbook.Api.Services
                 Expires = DateTime.Now.AddMinutes(_config.GetValue<int>("Jwt:ExpirationInterval")),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey), SecurityAlgorithms.HmacSha256Signature),
                 Issuer = _config.GetValue<string>("Jwt:Issuer"),
+                Audience = _config.GetValue<string>("Jwt:Issuer"),
                 IssuedAt = DateTime.UtcNow,
             };
 
@@ -113,7 +114,5 @@ namespace Cookbook.Api.Services
             return userRefreshToken.IsExpired;
 
         }
-
-        
     }
 }

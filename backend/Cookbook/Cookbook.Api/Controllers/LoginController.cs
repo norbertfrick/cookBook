@@ -1,13 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
 using Cookbook.Api.Helpers;
 using Cookbook.Api.Interfaces;
+using Cookbook.Api.Requests;
 using Cookbook.Domain.Helpers;
 using Cookbook.Domain.Interfaces;
-using Cookbook.Domain.Model;
 using Cookbook.Domain.Wrappers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -29,9 +24,10 @@ namespace Cookbook.Api.Controllers
 
 
         [Route("/login")]
-        public async Task<ActionResult<RequestResponse<TokenWrapper>>> Login([FromBody] string email, string password)
+        [HttpPost]
+        public async Task<ActionResult<RequestResponse<TokenWrapper>>> Login([FromBody] RegisterLoginUserRequest request)
         {
-            var result = await _loginService.Login(email, password);
+            var result = await _loginService.Login(request.Username, request.Password);
 
             if (result.IsSuccess)
             {
@@ -44,9 +40,10 @@ namespace Cookbook.Api.Controllers
 
         [Authorize]
         [Route("/logout")]
+        [HttpPost]
         public async Task<ActionResult<RequestResponse>> Logout([FromBody] Guid userId)
         {
-            var result = await _loginService.Logout(userId);
+            var result = await _loginService.Logout(userId, _cookieHelper.GetRefreshTokenFromRequest(HttpContext));
 
             if (result.IsSuccess)
             {
@@ -58,9 +55,12 @@ namespace Cookbook.Api.Controllers
         }
 
         [Route("/register")]
-        public async Task<ActionResult<RequestResponse<UserProfile>>> Register(string username, string password)
-            => (await _loginService.RegisterUser(username, password)).ToRequestResponse();
+        [HttpPost]
+        public async Task<ActionResult<RequestResponse<Nullable<Guid>>>> Register([FromBody] RegisterLoginUserRequest request)
+            => (await _loginService.RegisterUser(request.Username, request.Password)).ToRequestResponse();
 
+        [Route("/refresh")]
+        [HttpPost]
         public async Task<ActionResult<RequestResponse<TokenWrapper>>> RefreshToken([FromBody] string refreshToken)
         {
             var result = await _loginService.RefreshToken(refreshToken);
